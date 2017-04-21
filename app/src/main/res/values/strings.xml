@@ -177,4 +177,5 @@
     <string name="payment_address_label">Payment address</string>
     <string name="invalid_payment">Invalid payment</string>
     <string name="payment_address">Payment address: %1$s</string>
+    <string name="copied_payment_address_to_clipboard">Copied %1$s to clipboard</string>
 </resources>

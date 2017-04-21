@@ -75,7 +75,7 @@ public class QrCodeHandlerPresenter implements
         final QrCode qrCode = new QrCode(uri.toString());
         final @QrCodeType.Type int qrCodeType = qrCode.getQrCodeType();
 
-        if (qrCodeType == QrCodeType.EXTERNAL) {
+        if (qrCodeType == QrCodeType.EXTERNAL_PAY) {
             handleExternalPayment(qrCode);
         } else if (qrCodeType == QrCodeType.PAY) {
             handleTokenPayment(qrCode);

@@ -20,10 +20,11 @@ package com.tokenbrowser.util;
 import android.support.annotation.IntDef;
 
 public class QrCodeType {
-    @IntDef({ADD, PAY, EXTERNAL, INVALID})
+    @IntDef({ADD, PAY, EXTERNAL_PAY, PAYMENT_ADDRESS, INVALID})
     public @interface Type {}
     public static final int ADD = 1;
     public static final int PAY = 2;
-    public static final int EXTERNAL = 3;
-    public static final int INVALID = 4;
+    public static final int EXTERNAL_PAY = 3;
+    public static final int PAYMENT_ADDRESS = 4;
+    public static final int INVALID = 5;
 }

@@ -17,6 +17,9 @@
 
 package com.tokenbrowser.presenter;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -115,8 +118,10 @@ public final class ScannerPresenter implements
         final QrCode qrCode = new QrCode(result);
         final @QrCodeType.Type int qrCodeType = qrCode.getQrCodeType();
 
-        if (qrCodeType == QrCodeType.EXTERNAL) {
-            handleExternalQrCode(qrCode);
+        if (qrCodeType == QrCodeType.EXTERNAL_PAY) {
+            handleExternalPaymentQrCode(qrCode);
+        } else if(qrCodeType == QrCodeType.PAYMENT_ADDRESS) {
+            handlePaymentAddressQrCode(qrCode);
         } else if (qrCodeType == QrCodeType.ADD) {
             handleAddQrCode(qrCode);
         } else if (qrCodeType == QrCodeType.PAY) {
@@ -128,7 +133,7 @@ public final class ScannerPresenter implements
         }
     }
 
-    private void handleExternalQrCode(final QrCode qrCode) {
+    private void handleExternalPaymentQrCode(final QrCode qrCode) {
         if (this.activity == null) return;
         try {
             final QrCodePayment payment = qrCode.getExternalPayment();
@@ -184,6 +189,19 @@ public final class ScannerPresenter implements
         } catch (InvalidQrCodePayment invalidQrCodePayment) {
             handleInvalidQrCode();
         }
+    }
+
+    private void handlePaymentAddressQrCode(final QrCode qrCode) {
+        if (this.activity == null) return;
+        final ClipboardManager clipboard = (ClipboardManager) this.activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        final ClipData clip = ClipData.newPlainText(this.activity.getString(R.string.payment_address_label), qrCode.getUrl());
+        clipboard.setPrimaryClip(clip);
+
+        Toast.makeText(
+                this.activity,
+                this.activity.getString(R.string.copied_payment_address_to_clipboard, qrCode.getUrl()),
+                Toast.LENGTH_LONG
+        ).show();
     }
 
     private void handleAddQrCode(final QrCode qrCode) {

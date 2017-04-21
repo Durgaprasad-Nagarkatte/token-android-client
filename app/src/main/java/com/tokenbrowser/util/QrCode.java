@@ -42,6 +42,10 @@ public class QrCode {
         this.url = url;
     }
 
+    public String getUrl() {
+        return this.url;
+    }
+
     public @QrCodeType.Type int getQrCodeType() {
         final String baseUrl = BaseApplication.get().getString(R.string.qr_code_base_url);
         if (this.url.startsWith(baseUrl + PAY_TYPE)) {
@@ -49,7 +53,9 @@ public class QrCode {
         } else if (this.url.startsWith(baseUrl + ADD_TYPE)) {
             return QrCodeType.ADD;
         } else if (this.url.startsWith(EXTERNAL_URL_PREFIX)) {
-            return QrCodeType.EXTERNAL;
+            return isPaymentAddressQrCode()
+                    ? QrCodeType.PAYMENT_ADDRESS
+                    : QrCodeType.EXTERNAL_PAY;
         } else {
             return QrCodeType.INVALID;
         }
@@ -153,5 +159,10 @@ public class QrCode {
                         username,
                         value
                 );
+    }
+
+    private boolean isPaymentAddressQrCode() {
+        final String[] splittedUrl = this.url.split("\\?");
+        return splittedUrl.length == 1;
     }
 }
